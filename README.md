@@ -5,8 +5,9 @@ blog posts. It is not meant to produce a practically useful blockchain solution,
 nor does it attempt to be particularly smart about it. 
 
 - [How to build a blockchain in Rust] by Mario Zupan
-  - Essentially builds upon [libp2p], [Tokio] and sha2
+  - Proof-of-work mining
   - Data is purely in-memory, i.e. the blockchain is not persisted
+  - Essentially builds upon [libp2p], [Tokio] and sha2
 - [How to Build a Blockchain from Scratch with Rust Programming Language] by Nandu Singh
 - [Rusty Chains: A Basic Blockchain Implementation Written in Pure Rust] on hackernoon
 
