@@ -2,7 +2,8 @@ use crate::app::App;
 use crate::block::Block;
 use libp2p::floodsub::{Floodsub, Topic};
 use libp2p::futures::future::Lazy;
-use libp2p::mdns::Mdns;
+use libp2p::mdns::{Mdns, MdnsEvent};
+use libp2p::swarm::NetworkBehaviourEventProcess;
 use libp2p::{identity, PeerId};
 use std::sync::mpsc;
 
@@ -63,5 +64,24 @@ impl AppBehaviour {
         behaviour.floodsub.subscribe(BLOCK_TOPIC.clone());
 
         behaviour
+    }
+}
+
+impl NetworkBehaviourEventProcess<MdnsEvent> for AppBehaviour {
+    fn inject_event(&mut self, event: MdnsEvent) {
+        match event {
+            MdnsEvent::Discovered(discovered_list) => {
+                for (peer, _addr) in discovered_list {
+                    self.floodsub.add_node_to_partial_view(peer);
+                }
+            }
+            MdnsEvent::Expired(expired_list) => {
+                for (peer, _addr) in expired_list {
+                    if !self.mdns.has_node(&peer) {
+                        self.floodsub.remove_node_from_partial_view(&peer);
+                    }
+                }
+            }
+        }
     }
 }
