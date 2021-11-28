@@ -14,5 +14,6 @@
 **/*.rs.bk
 
 .idea/
+sccache.log
 
 # End of https://www.toptal.com/developers/gitignore/api/rust,clion

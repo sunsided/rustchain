@@ -36,6 +36,7 @@ pub enum EventType {
 }
 
 #[derive(NetworkBehaviour)]
+#[behaviour(event_process = true)] // see https://github.com/libp2p/rust-libp2p/issues/2328#issuecomment-962927589
 pub struct AppBehaviour {
     // Note that Floodsub broadcasts all requests. This is horribly inefficient,
     // but it is trivial to set up. See e.g. `Gossipsub`.
