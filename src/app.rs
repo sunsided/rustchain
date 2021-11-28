@@ -1,4 +1,4 @@
-use crate::block::Block;
+use crate::block::{calculate_hash, Block};
 use chrono::Utc;
 use log::{error, warn};
 
@@ -12,9 +12,9 @@ use log::{error, warn};
 /// attribute, which is agreed upon between nodes based on a consensus algorithm and based on
 /// the network’s hash-power, so the network can guarantee to produce a new block
 /// in a certain amount of time.
-const DIFFICULTY_PREFIX: &str = "00";
+pub(crate) const DIFFICULTY_PREFIX: &str = "00";
 
-fn hash_to_binary_representation(hash: &[u8]) -> String {
+pub(crate) fn hash_to_binary_representation(hash: &[u8]) -> String {
     let mut res: String = String::default();
     for c in hash {
         res.push_str(&format!("{:b}", c));
@@ -27,7 +27,7 @@ pub struct App {
 }
 
 impl App {
-    fn new() -> Self {
+    pub(crate) fn new() -> Self {
         Self { blocks: vec![] }
     }
 
@@ -35,7 +35,7 @@ impl App {
     /// This is a "special" block in that it doesn’t really adhere to the same
     /// rules as the rest of the blocks. For example, it doesn’t have a valid
     /// `previous_hash`, since there simply was no block before it.
-    fn genesis(&mut self) {
+    pub(crate) fn genesis(&mut self) {
         assert!(self.blocks.is_empty());
         let genesis_block = Block {
             id: 0,

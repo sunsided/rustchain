@@ -1,5 +1,7 @@
+use crate::app::{hash_to_binary_representation, DIFFICULTY_PREFIX};
 use chrono::Utc;
 use log::info;
+use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -50,7 +52,13 @@ fn mine_block(id: u64, timestamp: i64, previous_hash: &str, data: &str) -> (u64,
     }
 }
 
-fn calculate_hash(id: u64, timestamp: i64, previous_hash: &str, data: &str, nonce: u64) -> Vec<u8> {
+pub(crate) fn calculate_hash(
+    id: u64,
+    timestamp: i64,
+    previous_hash: &str,
+    data: &str,
+    nonce: u64,
+) -> Vec<u8> {
     let data = serde_json::json!({
         "id": id,
         "previous_hash": previous_hash,
